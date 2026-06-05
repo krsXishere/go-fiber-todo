@@ -4,6 +4,9 @@ import (
 	"cmd/main/domain"
 	"cmd/main/dto"
 	"context"
+	"database/sql"
+	"errors"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -43,7 +46,26 @@ func (t todoService) Create(ctx context.Context, req dto.CreateTodoData) error {
 		ID:       uuid.NewString(),
 		Title:    req.Title,
 		Subtitle: req.Subtitle,
+		CreatedAt: sql.NullTime{Valid: true, Time: time.Now()},
+		UpdatedAt: sql.NullTime{Valid: true, Time: time.Now()},
 	}
 
 	return t.todoRepository.Save(ctx, &todo)
+}
+
+func (t todoService) Update(ctx context.Context, req dto.UpdateTodoData) error {
+	persistedTodo, err := t.todoRepository.FindById(ctx, req.ID)
+	if err != nil {
+		return err
+	}
+
+	if persistedTodo.ID == "" {
+		return errors.New("todo data not found")
+	}
+	
+	persistedTodo.Title = req.Title
+	persistedTodo.Subtitle = req.Subtitle
+	persistedTodo.UpdatedAt = sql.NullTime{Valid: true, Time: time.Now()}
+
+	return t.todoRepository.Update(ctx, &persistedTodo)
 }

@@ -22,6 +22,7 @@ func NewTodo(app *fiber.App, todoService domain.TodoService) {
 
 	app.Get("/todos", ta.Index)
 	app.Post("/todos", ta.Create)
+	app.Put("/todos/:id", ta.Update)
 }
 
 func (ta todoApi) Index(ctx fiber.Ctx) error {
@@ -61,4 +62,31 @@ func (ta todoApi) Create(ctx fiber.Ctx) error {
 
 	return ctx.Status(http.StatusCreated).
 		JSON(dto.CreateResponseSuccess("todo created"))
+}
+
+func (ta todoApi) Update(ctx fiber.Ctx) error {
+	t, cancel := context.WithTimeout(ctx.Context(), 10*time.Second)
+	defer cancel()
+
+	var req dto.UpdateTodoData
+	if err := ctx.Bind().Body(&req); err != nil {
+		return ctx.SendStatus(http.StatusUnprocessableEntity)
+	}
+
+	fails := utility.Validate(req)
+	if len(fails) > 0 {
+		return ctx.Status(http.StatusBadRequest).
+			JSON(dto.CreateResponseErrorData("validation failed", fails))
+	}
+
+	req.ID = ctx.Params("id")
+
+	err := ta.todoService.Update(t, req)
+	if err != nil {
+		return ctx.Status(http.StatusInternalServerError).
+			JSON(dto.CreateResponseError(err.Error()))
+	}
+
+	return ctx.Status(http.StatusOK).
+		JSON(dto.CreateResponseSuccess("todo updated"))
 }

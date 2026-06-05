@@ -27,7 +27,7 @@ func (tr todoRepository) FindAll(ctx context.Context) (result []domain.Todo, err
 
 func (tr todoRepository) FindById(ctx context.Context, id string) (result domain.Todo, err error) {
 	dataset := tr.db.From("todos").Where(goqu.C("deleted_at").IsNull(), goqu.C("id").Eq(id))
-	err = dataset.ScanStructsContext(ctx, &result)
+	_, err = dataset.ScanStructContext(ctx, &result)
 	return
 }
 

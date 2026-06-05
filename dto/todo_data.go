@@ -12,3 +12,10 @@ type CreateTodoData struct {
 	Title    string `json:"title" validate:"required"`
 	Subtitle string `json:"subtitle" validate:"required"`
 }
+
+type UpdateTodoData struct {
+	ID       string `json:"-"`
+	Title    string `json:"title" validate:"required"`
+	Subtitle string `json:"subtitle" validate:"required"`
+	// UpdatedAt string `json:"updated_at" validate:"required"`
+}

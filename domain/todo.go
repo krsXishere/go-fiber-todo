@@ -26,4 +26,5 @@ type TodoRepository interface {
 type TodoService interface {
 	Index(ctx context.Context) ([]dto.TodoData, error)
 	Create(ctx context.Context, req dto.CreateTodoData) error
+	Update(ctx context.Context, req dto.UpdateTodoData) error
 }
