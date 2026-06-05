@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"cmd/main/dto"
 	"context"
 	"database/sql"
 )
@@ -10,7 +11,7 @@ type Todo struct {
 	Title     string       `db:"title"`
 	Subtitle  string       `db:"subtitle"`
 	CreatedAt sql.NullTime `db:"created_at"`
-	UpdatedAt sql.NullTime `db:"update_at"`
+	UpdatedAt sql.NullTime `db:"updated_at"`
 	DeletedAt sql.NullTime `db:"deleted_at"`
 }
 
@@ -20,4 +21,9 @@ type TodoRepository interface {
 	Save(ctx context.Context, t *Todo) error
 	Update(ctx context.Context, t *Todo) error
 	Delete(ctx context.Context, id string) error
+}
+
+type TodoService interface {
+	Index(ctx context.Context) ([]dto.TodoData, error)
+	Create(ctx context.Context, req dto.CreateTodoData) error
 }

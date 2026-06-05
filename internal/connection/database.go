@@ -10,7 +10,7 @@ import (
 )
 
 func GetDatabase(conf config.Database) *sql.DB {
-	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable Timzone=%s",
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable Timezone=%s",
 		conf.Host,
 		conf.Port,
 		conf.User,
