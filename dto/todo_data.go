@@ -1,6 +1,6 @@
 package dto
 
-type TodoData struct {
+type Todo struct {
 	ID        string `json:"id"`
 	Title     string `json:"title"`
 	Subtitle  string `json:"subtitle"`
@@ -8,14 +8,13 @@ type TodoData struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
-type CreateTodoData struct {
+type CreateTodo struct {
 	Title    string `json:"title" validate:"required"`
 	Subtitle string `json:"subtitle" validate:"required"`
 }
 
-type UpdateTodoData struct {
+type UpdateTodo struct {
 	ID       string `json:"-"`
 	Title    string `json:"title" validate:"required"`
 	Subtitle string `json:"subtitle" validate:"required"`
-	// UpdatedAt string `json:"updated_at" validate:"required"`
 }

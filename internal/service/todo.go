@@ -21,15 +21,15 @@ func NewTodo(todoRepository domain.TodoRepository) domain.TodoService {
 	}
 }
 
-func (t todoService) Index(ctx context.Context) ([]dto.TodoData, error) {
+func (t todoService) Index(ctx context.Context) ([]dto.Todo, error) {
 	todos, err := t.todoRepository.FindAll(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	var todoData []dto.TodoData
+	var todoData []dto.Todo
 	for _, v := range todos {
-		todoData = append(todoData, dto.TodoData{
+		todoData = append(todoData, dto.Todo{
 			ID:        v.ID,
 			Title:     v.Title,
 			Subtitle:  v.Subtitle,
@@ -41,7 +41,7 @@ func (t todoService) Index(ctx context.Context) ([]dto.TodoData, error) {
 	return todoData, nil
 }
 
-func (t todoService) Create(ctx context.Context, req dto.CreateTodoData) error {
+func (t todoService) Create(ctx context.Context, req dto.CreateTodo) error {
 	todo := domain.Todo{
 		ID:       uuid.NewString(),
 		Title:    req.Title,
@@ -53,7 +53,7 @@ func (t todoService) Create(ctx context.Context, req dto.CreateTodoData) error {
 	return t.todoRepository.Save(ctx, &todo)
 }
 
-func (t todoService) Update(ctx context.Context, req dto.UpdateTodoData) error {
+func (t todoService) Update(ctx context.Context, req dto.UpdateTodo) error {
 	persistedTodo, err := t.todoRepository.FindById(ctx, req.ID)
 	if err != nil {
 		return err

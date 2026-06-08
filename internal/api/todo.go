@@ -43,7 +43,7 @@ func (ta todoApi) Create(ctx fiber.Ctx) error {
 	t, cancel := context.WithTimeout(ctx.Context(), 10*time.Second)
 	defer cancel()
 
-	var req dto.CreateTodoData
+	var req dto.CreateTodo
 	if err := ctx.Bind().Body(&req); err != nil {
 		return ctx.SendStatus(http.StatusUnprocessableEntity)
 	}
@@ -68,7 +68,7 @@ func (ta todoApi) Update(ctx fiber.Ctx) error {
 	t, cancel := context.WithTimeout(ctx.Context(), 10*time.Second)
 	defer cancel()
 
-	var req dto.UpdateTodoData
+	var req dto.UpdateTodo
 	if err := ctx.Bind().Body(&req); err != nil {
 		return ctx.SendStatus(http.StatusUnprocessableEntity)
 	}
